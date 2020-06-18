@@ -43,48 +43,48 @@ export default {
     return {
       loginForm: {
         /* eslint-disable */
-        username: "admin",
-        password: "123456"
+        username: 'admin',
+        password: '123456'
       },
       // 设置表单的验证规则
       loginFormRules: {
         username: [
-          { required: true, message: "请输入用户名称", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+          { required: true, message: '请输入用户名称', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 15, message: "长度在6 到 15 个字符", trigger: "blur" }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '长度在6 到 15 个字符', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   created() {},
   methods: {
     //   当点击重置按钮时,重置表内的内容
     resetLoginForm() {
-      console.log(this);
+      console.log(this)
       //   重置表单内容,调用resetFields()这个方法
-      this.$refs.loginFormRef.resetFields();
+      this.$refs.loginFormRef.resetFields()
     },
     login() {
       // 对表单进行校验
       this.$refs.loginFormRef.validate(async valid => {
-        console.log(valid);
-        if (!valid) return console.log("ok");
+        console.log(valid)
+        if (!valid) return console.log('ok')
         // 发送请求
-        const { data: res } = await this.$http.post("login", this.loginForm);
-        console.log(res); //登录成功状态码是200,如果状态码不是200就表示登录失败
-        if (res.meta.status !== 200) return this.$message.error("登录失败");
-        this.$message.success("登录成功");
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        console.log(res) //登录成功状态码是200,如果状态码不是200就表示登录失败
+        if (res.meta.status !== 200) return this.$message.error('登录失败')
+        this.$message.success('登录成功')
         // 将服务器端验证成功的token值保存到sessionstorage中
-        sessionStorage.setItem("token", res.data.token);
+        sessionStorage.setItem('token', res.data.token)
         // 根据链式编程,跳转页面
-        this.$router.push("/home");
-      });
+        this.$router.push('/home')
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

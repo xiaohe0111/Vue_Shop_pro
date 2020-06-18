@@ -3,13 +3,15 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 // 导入home组件
 import Home from '../components/Home.vue'
+// 导入welcome组件  这个组件需要在home组件中显示,,所以是以子组件的形式展示的
+import Welcome from '../components/Welcome.vue';
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
     { path: '/login', component: Login },
-    { path: '/home', component: Home }
+    { path: '/home', component: Home, redirect: '/welcome', children: [{ path: '/welcome', component: Welcome }] }
   ]
 })
 // 挂载路由导航守卫beforeEach
