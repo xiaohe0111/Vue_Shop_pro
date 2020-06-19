@@ -3,7 +3,7 @@
     <!-- 头部区域 -->
     <el-header>
       <div>
-        <img src="../assets/heima.png" alt="" />
+        <img src="../assets/heima.png" alt />
         <span>电商管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出登录</el-button>
@@ -20,22 +20,21 @@
           unique-opened
           :collapse="isCollapse"
           :collapse-transition="false"
+          router
+          :default-active="activePath"
         >
           <!-- ================一级菜单============== -->
-          <el-submenu
-            :index="item.id + ''"
-            v-for="item in menuList"
-            :key="item.id"
-          >
+          <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
             <template slot="title">
               <i :class="iconsObj[item.id]"></i>
               <span>{{ item.authName }}</span>
             </template>
             <!-- ==============二级菜单================ -->
             <el-menu-item
-              :index="ele.id + ''"
+              :index="'/'+ele.path"
               v-for="ele in item.children"
               :key="ele.id"
+              @click="saveNavState('/'+ele.path)"
             >
               <template slot="title">
                 <i class="el-icon-menu"></i>
@@ -47,8 +46,8 @@
       </el-aside>
       <!-- 主体的右侧区域 -->
       <el-main>
-          <!-- 预留路由占位符 -->
-          <router-view></router-view>
+        <!-- 预留路由占位符 -->
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -68,7 +67,8 @@ export default {
         102: 'iconfont icon-danju',
         145: 'iconfont icon-baobiao'
       },
-      isCollapse: false
+      isCollapse: false,
+      activePath: ''
     }
   },
   created() {},
@@ -88,10 +88,18 @@ export default {
     },
     toggleCollapse() {
       this.isCollapse = !this.isCollapse
+    },
+    // 保存激活时候的token值
+    saveNavState(activePath) {
+      console.log(activePath)
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
   },
   created() {
     this.getMenuList()
+    // 当项目创建完成后显示
+    this.activePath = sessionStorage.getItem('activePath')
   }
 }
 </script>

@@ -5,15 +5,21 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 // 导入welcome组件  这个组件需要在home组件中显示,,所以是以子组件的形式展示的
 import Welcome from '../components/Welcome.vue';
-
+// 导入用户列表组件这个组件需要在home组件中显示,,所以是以子组件的形式展示的
+import Users from '../components/users/Users.vue';
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
     { path: '/login', component: Login },
-    { path: '/home', component: Home, redirect: '/welcome', children: [{ path: '/welcome', component: Welcome }] }
+    { path: '/home', component: Home, redirect: '/welcome', children: [{ path: '/welcome', component: Welcome }, { path: '/users', component: Users }] }
   ]
 })
+// 这个是从网上复制的,为了防止路由重复而报错产生的影响,添加的
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 // 挂载路由导航守卫beforeEach
 router.beforeEach((to, from, next) => {
   // 如果访问的是登录页面就直接放行
